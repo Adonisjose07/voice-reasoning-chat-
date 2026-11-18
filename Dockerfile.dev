@@ -1,0 +1,24 @@
+# ==========================================
+# Dockerfile para Desarrollo Local
+# ==========================================
+FROM node:20-alpine
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3001
+ENV HOSTNAME="0.0.0.0"
+
+# Soporte de sondeo de archivos (polling) para hot-reloading en Windows
+ENV CHOKIDAR_USEPOLLING=true
+ENV WATCHPACK_POLLING=true
+
+COPY package.json package-lock.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 3001
+
+CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0", "-p", "3001"]

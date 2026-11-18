@@ -1,0 +1,22 @@
+services:
+  chat-voice-mode-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_VERSION: ${BUILD_VERSION:-1.0.0}
+    container_name: chat-voice-mode-prod
+    restart: always
+    expose:
+      - "3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_REALTIME_MODEL: ${OPENAI_REALTIME_MODEL}
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true
